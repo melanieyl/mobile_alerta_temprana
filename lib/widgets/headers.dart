@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_alerta_temprana/utils/responsive.dart';
 
 class HeaderCuadrado extends StatelessWidget {
   @override
@@ -246,6 +247,7 @@ class IconHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return Stack(
       children: <Widget>[
         _IconHeaderBackground(
@@ -255,9 +257,9 @@ class IconHeader extends StatelessWidget {
         ),
         logo != null
             ? Positioned(
-                left: -80,
+                left: responsive.dp(-5),
                 child: Image.asset(
-                    scale: 2.5,
+                    scale: responsive.wp(0.9),
                     this.logo!,
                     color: Colors.white.withOpacity(0.3)),
               )
@@ -265,7 +267,7 @@ class IconHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20, width: double.infinity),
+            SizedBox(height: responsive.hp(0), width: double.infinity),
 
             // const SizedBox(
             //   width: 300,
@@ -278,7 +280,7 @@ class IconHeader extends StatelessWidget {
             //           color: Colors.white,
             //           fontWeight: FontWeight.bold)),
             // ),
-            SizedBox(height: 20),
+            SizedBox(height: responsive.hp(3)),
             this.logo != null
                 ? Image.asset(
                     this.logo2!,

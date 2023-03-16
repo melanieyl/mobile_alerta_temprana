@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile_alerta_temprana/utils/responsive.dart';
 
 class BotonGordo extends StatelessWidget {
   final IconData icon;
@@ -17,6 +18,7 @@ class BotonGordo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return GestureDetector(
       onTap: this.onPress,
       child: Stack(
@@ -25,14 +27,14 @@ class BotonGordo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 140, width: 40),
-              FaIcon(this.icon, color: Colors.white, size: 40),
-              SizedBox(width: 20),
+              SizedBox(height: responsive.hp(17), width: responsive.wp(12)),
+              FaIcon(this.icon, color: Colors.white, size: responsive.dp(5)),
+              SizedBox(width: responsive.wp(10)),
               Expanded(
                   child: Text(this.texto,
                       style: TextStyle(color: Colors.white, fontSize: 18))),
               FaIcon(FontAwesomeIcons.chevronRight, color: Colors.white),
-              SizedBox(width: 40),
+              SizedBox(width: responsive.dp(7)),
             ],
           )
         ],
@@ -50,6 +52,7 @@ class _BotonGordoBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return Container(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
@@ -59,13 +62,14 @@ class _BotonGordoBackground extends StatelessWidget {
                 right: -20,
                 top: -20,
                 child: FaIcon(this.icon,
-                    size: 150, color: Colors.white.withOpacity(0.2)))
+                    size: responsive.dp(15),
+                    color: Colors.white.withOpacity(0.2)))
           ],
         ),
       ),
       width: double.infinity,
-      height: 100,
-      margin: EdgeInsets.all(20),
+      height: responsive.hp(13),
+      margin: EdgeInsets.all(responsive.dp(2)),
       decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(

@@ -19,7 +19,7 @@ class Encabezado extends StatelessWidget {
                 logo2: 'imgs/escudo_scz2.png',
                 color1: Color.fromARGB(255, 49, 184, 31),
                 color2: Color.fromARGB(255, 189, 255, 172),
-                grosor: responsive.hp(35),
+                grosor: responsive.hp(33),
               ),
             ],
           ),

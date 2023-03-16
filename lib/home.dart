@@ -1,14 +1,12 @@
-// import 'package:alerta_temprana_scz/Send%20Notification/form_page.dart';
-// import 'package:alerta_temprana_scz/pages/show_alerts/implementation_cards/ui/contact_list_page.dart';
-// import 'package:alerta_temprana_scz/pages/show_alerts/show_categories.dart';
-
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile_alerta_temprana/pages/categories/show_categories.dart';
+import 'package:mobile_alerta_temprana/pages/sendNotification/form_page.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/boton_gordo.dart';
+import 'package:mobile_alerta_temprana/widgets/boton_link.dart';
 import 'package:mobile_alerta_temprana/widgets/encabezado.dart';
-import 'package:mobile_alerta_temprana/widgets/headers.dart';
 
 class ItemBoton {
   final IconData icon;
@@ -39,29 +37,20 @@ class _HomePageState extends State<HomePage> {
         Colors.yellow.shade700,
         Colors.yellowAccent,
         () {
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: (_) => const FormularioEmergencia()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const FormularioEmergencia()));
         },
       ),
       ItemBoton(FontAwesomeIcons.warning, 'Mostrar Alertas', Colors.red,
           Colors.orangeAccent, () {
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (_) => MicrosListPage(distances)));
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (_) => CategoriesPage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => CategoriesPage()));
       }),
       ItemBoton(
         FontAwesomeIcons.whatsapp,
         'Contáctate con nostros con un toque',
         Colors.green.shade700,
         Colors.green.shade400,
-        () {},
-      ),
-      ItemBoton(
-        Icons.mail,
-        'Difundir',
-        Colors.grey.shade800,
-        Colors.grey.shade400,
         () {},
       ),
     ];
@@ -92,12 +81,51 @@ class _HomePageState extends State<HomePage> {
                   height: responsive.hp(20),
                 ),
                 ...itemMap,
-                Center(child: Text("Emergencias Gobernación: 800148139")),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    BotonLink(
+                        texto: 'Guia de Seguridad',
+                        color1: Color.fromARGB(255, 0, 167, 8),
+                        color2: Color.fromARGB(255, 62, 252, 14),
+                        onPress: () {}),
+                    BotonLink(
+                        texto: 'Plan de contingencia',
+                        color1: Color.fromARGB(255, 62, 252, 14),
+                        color2: Color.fromARGB(255, 0, 158, 61),
+                        onPress: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      const FormularioEmergencia()));
+                        }),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    BotonLink(
+                        texto: 'Blog de articulos',
+                        color1: Color.fromARGB(255, 0, 158, 61),
+                        color2: Color.fromARGB(255, 62, 252, 14),
+                        onPress: () {}),
+                    BotonLink(
+                        texto: 'Numero de emergencias',
+                        color1: Color.fromARGB(255, 62, 252, 14),
+                        color2: Color.fromARGB(255, 0, 158, 61),
+                        onPress: () {}),
+                  ],
+                ),
+                SizedBox(
+                  height: responsive.hp(8),
+                ),
+                const Center(child: Text("Emergencias Gobernación: 800148139")),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                        height: 220,
+                        height: responsive.hp(20),
                         child: Icon(
                             IconData(0xe198, fontFamily: 'MaterialIcons'))),
                     Text("Solution "),
@@ -107,7 +135,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Encabezado()
+          Encabezado(),
         ],
       ),
 
@@ -121,21 +149,6 @@ class _HomePageState extends State<HomePage> {
           // Navigator.pushNamed(context, 'usuarios');
         },
       ),
-    );
-  }
-}
-
-class BotonGordoTemp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BotonGordo(
-      icon: FontAwesomeIcons.carCrash,
-      texto: 'Motor Accident',
-      color1: Color(0xff6989F5),
-      color2: Color(0xff906EF5),
-      onPress: () {
-        print('Click!');
-      },
     );
   }
 }
