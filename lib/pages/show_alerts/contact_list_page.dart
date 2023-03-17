@@ -1,13 +1,6 @@
-// import 'package:alerta_temprana_scz/models/Alert.dart';
-// import 'package:alerta_temprana_scz/models/Evento.dart';
-// import 'package:alerta_temprana_scz/pages/show_alerts/implementation_cards/ui/contact_detail_screen.dart';
-// import 'package:alerta_temprana_scz/pages/show_alerts/implementation_cards/ui/widgets/cards.dart';
-// import 'package:alerta_temprana_scz/pages/show_alerts/implementation_cards/ui/widgets/perspective_list_view.dart';
-// import 'package:alerta_temprana_scz/home.dart';
-// import 'package:alerta_temprana_scz/main.dart';
-// import 'package:alerta_temprana_scz/services/alertas_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_alerta_temprana/models/Alert.dart';
+import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/cards.dart';
 import 'package:mobile_alerta_temprana/widgets/perspective_list_view.dart';
 
@@ -19,14 +12,6 @@ class MicrosListPage extends StatefulWidget {
 }
 
 class MicrosListPageState extends State<MicrosListPage> {
-  // final alertaService = AlertasServices();
-
-  // void _loadData() async {
-  //   // alertas = await AlertasServices().getAlerts(widget.nombreEvento);
-  //   print(alertas);
-  //   setState(() {});
-  // }
-
   @override
   void initState() {
     // _loadData();
@@ -36,13 +21,14 @@ class MicrosListPageState extends State<MicrosListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.white,
+            Color.fromARGB(255, 165, 18, 18),
             Colors.green,
           ],
           begin: Alignment.bottomCenter,
@@ -51,23 +37,12 @@ class MicrosListPageState extends State<MicrosListPage> {
       ),
       child: PerspectiveListView(
         visualizedItems: alertas.length,
-        itemExtent: 470,
+        itemExtent: responsive.hp(70),
         initialIndex: alertas.length - 1,
         enableBackItemsShadow: true,
         backItemsShadowColor: Theme.of(context).scaffoldBackgroundColor,
         padding: const EdgeInsets.all(10),
-        onTapFrontItem: (index) {
-          // final color = Colors.accents[index! % Colors.accents.length];
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute<dynamic>(
-          //     builder: (_) => ContactDetailScreen(
-          //       color: color,
-          //       distance: 4,
-          //     ),
-          //   ),
-          // );
-        },
+        onTapFrontItem: (index) {},
         children: List.generate(alertas.length, (index) {
           return MicrosCard(
             alert: alertas[index],

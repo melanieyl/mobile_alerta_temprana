@@ -89,15 +89,15 @@ class MicrosCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //---------------------------
-                    // Name and Role
+                    // Name and fecha
                     //---------------------------
                     Row(
                       children: [
-                        const Icon(
-                          Icons.notifications,
-                          color: Colors.blueAccent,
-                          size: 40,
-                        ),
+                        // const Icon(
+                        //   Icons.notifications,
+                        //   color: Colors.blueAccent,
+                        //   size: 40,
+                        // ),
                         const SizedBox(width: 10),
                         Flexible(
                           child: Text.rich(
@@ -105,7 +105,10 @@ class MicrosCard extends StatelessWidget {
                               text: alert.nombre,
                               children: [
                                 TextSpan(
-                                  text: '\n' + alert.fecha.toString(),
+                                  text: '\n' +
+                                      alert.fecha.toString().substring(0, 10) +
+                                      "       hora: " +
+                                      alert.fecha.toString().substring(11, 16),
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal,
@@ -117,13 +120,14 @@ class MicrosCard extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
+                              //fontStyle: FontStyle.normal,
                             ),
                           ),
                         ),
                       ],
                     ),
                     //---------------------------
-                    // Address
+                    // estado
                     //---------------------------
                     Row(
                       children: [
@@ -145,7 +149,7 @@ class MicrosCard extends StatelessWidget {
                       ],
                     ),
                     //---------------------------
-                    // Phone Number
+                    // Phone detalle
                     //---------------------------
                     Row(
                       children: [
@@ -155,17 +159,18 @@ class MicrosCard extends StatelessWidget {
                           color: Colors.green[500],
                         ),
                         const SizedBox(width: 10),
-                        SizedBox(
-                          width: 400,
-                          child: Text(
-                            alert.detalle,
-                            maxLines: 6,
+                        Flexible(
+                          child: Text.rich(
+                            TextSpan(
+                              text: alert.detalle.substring(0, 70) + ' ...',
+                            ),
                             style: const TextStyle(
                               fontSize: 16,
-                              fontStyle: FontStyle.italic,
+
+                              //fontStyle: FontStyle.normal,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     //---------------------------
@@ -205,7 +210,7 @@ class MicrosCard extends StatelessWidget {
                           // margin:
                           //     EdgeInsets.only(top: 450, right: 100, left: 100),
                           decoration: BoxDecoration(
-                            color: Colors.green[700],
+                            color: Colors.black,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
@@ -229,10 +234,6 @@ class MicrosCard extends StatelessWidget {
                                   fontSize: 15,
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic),
-                            ),
-                            trailing: Icon(
-                              Icons.visibility,
-                              color: Colors.white,
                             ),
                             onTap: () {
                               // final positionProvider =

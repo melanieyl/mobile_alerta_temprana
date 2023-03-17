@@ -67,8 +67,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                 eventos[index2].nombre)));
                               },
                               child: Container(
-                                height: 140,
-                                width: 140,
+                                height: responsive.hp(20),
+                                width: responsive.wp(40),
                                 // height: MediaQuery.of(context).size.height,
                                 // width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
@@ -82,14 +82,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: responsive.hp(2.5),
                             ),
                             Text(
                               eventos[index2].nombre,
                               softWrap: true,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: Colors.green,
+                                  color: Colors.green.shade800,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -101,62 +101,26 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 );
               },
             ),
-            Positioned(
-              child: Container(
-                width: responsive.width,
-                height: responsive.hp(13),
-                color: Colors.white,
-                child: Image.asset(
-                  'imgs/sloganSCZ.png',
-                  scale: responsive.dp(2),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   child: Container(
+            //     width: responsive.width,
+            //     height: responsive.hp(13),
+            //     color: Colors.white,
+            //     child: Image.asset(
+            //       'imgs/sloganSCZ.png',
+            //       scale: responsive.dp(2),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
-      // drawer: Drawer(
-      //   child: Positioned(
-      //     child: Container(
-      //       width: responsive.width,
-      //       height: responsive.hp(11),
-      //       color: Colors.white,
-      //       child: Image.asset(
-      //         'imgs/sloganSCZ.png',
-      //         scale: responsive.dp(2),
-      //       ),
-      //     ),
-      //   ),
-      // ),
       floatingActionButton: FloatingActionButton(
         heroTag: "MainButton",
         backgroundColor: Colors.green.shade900,
         child: Icon(Icons.call),
-        onPressed: () {
-          // socketService.emit('emitir-mensaje',
-          //     {'nombre': 'Flutter', 'mensaje': 'Hola desde Flutter'});
-          // Navigator.pushNamed(context, 'usuarios');
-        },
+        onPressed: () {},
       ),
     );
   }
 }
-
-// double heightForGalleryProducts(int index) {
-//   double result = 0;
-//   productsByCategory = [];
-
-//   for (var i = 0; i < products.length; i++) {
-//     if (products[i].categoria.nombre == categoriesProducts[index].name) {
-//       result = result + 1;
-//       productsByCategory.add(products[i]);
-//     }
-//   }
-//   if (result % 3 != 0) {
-//     result = ((result / 3).truncate() + 1) * 175;
-//   } else {
-//     result = (result / 3) * 175;
-//   }
-
-//   return result;
-// }

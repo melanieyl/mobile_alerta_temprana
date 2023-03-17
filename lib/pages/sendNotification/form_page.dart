@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_alerta_temprana/models/eventos.dart';
 import 'package:mobile_alerta_temprana/services/notificaiones.dart';
-import 'package:mobile_alerta_temprana/widgets/headers.dart';
+import 'package:mobile_alerta_temprana/utils/responsive.dart';
 
 class FormularioEmergencia extends StatefulWidget {
   const FormularioEmergencia({super.key});
@@ -22,6 +22,11 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
   late final double latitud;
   late final double longitud;
   String? _video2;
+  final List<XFile?> _imageList = [];
+  final List<String> _imageListP = [];
+
+  final int _maxImageCount = 5;
+  bool isVerifying = false;
 
   List<Eventos> eventos = [
     Eventos(id: 1, nombre: 'incendio'),
@@ -72,26 +77,24 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     } else {}
   }
 
-  final List<XFile?> _imageList = [];
-  final List<String> _imageListP = [];
-
-  final int _maxImageCount = 5;
-  bool isVerifying = false;
   @override
   Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Stack(
-              children: const [
-                IconHeader(
-                  titulo: 'Notificaciones',
-                  color1: Color.fromARGB(255, 2, 57, 121),
-                  color2: Color.fromARGB(214, 48, 255, 221),
-                  grosor: 150,
-                ),
-              ],
+            SizedBox(
+              height: responsive.hp(3),
+            ),
+            Container(
+              width: responsive.width,
+              height: responsive.hp(15),
+              color: Colors.white,
+              child: Image.asset(
+                'imgs/sloganSCZ.png',
+                scale: responsive.dp(1.5),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -103,17 +106,17 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 5,
+                          height: responsive.hp(1),
                         ),
                         TextField(
-                          maxLines: 2,
+                          maxLines: 3,
                           style: TextStyle(
                               color: Colors.cyan.shade900, fontSize: 18),
                           controller: _textControllerdescripcion,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: "Brebe descripcion del evento",
+                            hintText: "Breve descripcion del evento",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
@@ -126,46 +129,36 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           ),
                         ),
                         (isVerifying && _textControllerdescripcion.text.isEmpty)
-                            ? Text(
+                            ? const Text(
                                 "Complete el campo descripcion",
                                 style:
                                     TextStyle(color: Colors.red, fontSize: 15),
                               )
                             : SizedBox.shrink(),
                         SizedBox(
-                          height: 15,
+                          height: responsive.hp(2),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _creationDateTimeController,
-                                style: TextStyle(
-                                    color: Colors.cyan.shade900, fontSize: 20),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: _creationDateTime.toString(),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  suffixIcon: IconButton(
-                                    onPressed: () =>
-                                        _creationDateTimeController.clear(),
-                                    icon: Icon(Icons.clear),
-                                  ),
-                                ),
-                              ),
+                        Container(
+                          width: responsive.width,
+                          height: responsive.hp(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black45,
                             ),
-                            IconButton(
-                              onPressed: () => _selectDatePicker(),
-                              icon: Icon(Icons.calendar_month),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: responsive.hp(3), left: responsive.wp(2)),
+                            child: Text(
+                              _creationDateTime.toString().substring(0, 19),
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 20),
                             ),
-                          ],
+                          ),
                         ),
                         SizedBox(
-                          height: 15,
+                          height: responsive.hp(2),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -199,65 +192,64 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           ),
                         ),
                         SizedBox(
-                          height: 15,
+                          height: responsive.hp(2),
                         ),
                         MaterialButton(
                             minWidth: MediaQuery.of(context).size.width,
-                            height: 50,
-                            color: Colors.cyan.shade200,
-                            hoverColor: Colors.cyan.shade900,
+                            height: responsive.hp(7),
+                            color: Colors.green.shade800,
+                            hoverColor: Colors.green.shade50,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)),
+                            onPressed: _guardarPocision,
                             child: Row(
                               children: <Widget>[
                                 (_miubicacion != false)
-                                    ? Icon(Icons.check, color: Colors.green)
-                                    : Icon(Icons.add, color: Colors.red),
+                                    ? const Icon(Icons.check,
+                                        color: Colors.green)
+                                    : const Icon(Icons.add, color: Colors.red),
                                 SizedBox(
-                                  width: 10,
+                                  width: responsive.wp(2),
                                 ),
-                                Text('Guardar mi actual Ubicacion',
+                                const Text('Guardar mi actual Ubicacion',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20)),
                               ],
-                            ),
-                            onPressed: _guardarPocision),
+                            )),
                         SizedBox(
-                          height: 15,
+                          height: responsive.hp(2),
                         ),
                         MaterialButton(
                             minWidth: MediaQuery.of(context).size.width,
-                            height: 50,
-                            color: Colors.cyan.shade400,
-                            hoverColor: Colors.cyan.shade900,
+                            height: responsive.hp(7),
+                            color: Colors.green.shade800,
+                            hoverColor: Colors.greenAccent.shade400,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)),
+                            onPressed: _selectVideo,
                             child: Row(
                               children: <Widget>[
                                 (_veifyVideo != false)
-                                    ? Icon(Icons.check, color: Colors.green)
-                                    : Icon(Icons.add, color: Colors.red),
-                                SizedBox(
+                                    ? const Icon(Icons.check,
+                                        color: Colors.green)
+                                    : const Icon(Icons.add, color: Colors.red),
+                                const SizedBox(
                                   width: 30,
                                 ),
-                                Text(
+                                const Text(
                                   'Subir un Video',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
                               ],
-                            ),
-                            onPressed: _selectVideo),
+                            )),
                         SizedBox(
-                          height: 15,
+                          height: responsive.hp(2),
                         ),
                         MaterialButton(
                           minWidth: MediaQuery.of(context).size.width,
-                          height: 50,
-                          color: Colors.cyan.shade300,
+                          height: responsive.hp(7),
+                          color: Colors.lightGreen.shade500,
                           hoverColor: Colors.cyan.shade900,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
@@ -276,34 +268,60 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                                   '$_imageList'); // Muestra un mensaje al usuario indicando que ya ha seleccionado el número máximo de imágenes
                             }
                           },
-                          child: Text('Agregar imágenes',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          child: Row(children: <Widget>[
+                            SizedBox(
+                              width: responsive.wp(15),
+                            ),
+                            const Text('Agregar imágenes',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                            SizedBox(
+                              width: responsive.wp(5),
+                            ),
+                            Text(
+                              '${_imageList.length} / $_maxImageCount ',
+                              style: const TextStyle(
+                                color: Colors.black38,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Center(
-                          child: Text(
-                            '${_imageList.length} / $_maxImageCount imágenes seleccionadas',
-                            style: TextStyle(
-                              color: Colors.black38,
-                              fontSize: 15,
+                        // ignore: unnecessary_null_comparison
+                        if (_imageList.length == null)
+                          Center()
+                        else
+                          Container(
+                            width: 300,
+                            height: 100,
+                            child: Expanded(
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _imageList.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.file(File(_imageListP[index])),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: responsive.hp(4),
                         ),
                         MaterialButton(
                             minWidth: MediaQuery.of(context).size.width,
-                            height: 50,
-                            color: Color.fromARGB(255, 16, 160, 129),
+                            height: responsive.hp(8),
+                            color: Colors.black,
                             hoverColor: Colors.cyan.shade900,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)),
                             child: const Text(
-                              "enviar",
+                              "Enviar",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 30),
                             ),
