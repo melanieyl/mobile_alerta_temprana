@@ -80,7 +80,7 @@ class MicrosListPageState extends State<MicrosListPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => Alertas(
+                        builder: (context) => Alertas(
                               alert: alertas[index!],
                             )));
                 // final color = Colors.accents[index! % Colors.accents.length];

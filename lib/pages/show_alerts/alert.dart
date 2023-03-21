@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_alerta_temprana/helpers/progress_indicator_fachero.dart';
 import 'package:mobile_alerta_temprana/models/Alert.dart';
 import 'package:mobile_alerta_temprana/models/Alerts.dart';
 import 'package:mobile_alerta_temprana/services/alertas_service.dart';
@@ -12,35 +13,31 @@ class Alertas extends StatefulWidget {
 }
 
 class _AlertasState extends State<Alertas> {
-  final List<AlertResponse> alerts = [];
-  final alertservice = new AlertasServices();
-
-  void loadData() async {
-    final alerts = await alertservice.getAlerts();
-    setState(() {});
-  }
+  List<AlertResponse> alerts = [];
+ 
 
   @override
   void initState() {
-    loadData();
-    // alerts.forEach((element) {
-    //   print(element);
-    // });
+    AlertasServices.getAlerts().then((listAlerts) => {
+          setState(() {
+            alerts = listAlerts;
+          }),
+        });
     super.initState();
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    return alerts.isEmpty
-        ? CircularProgressIndicator()
-        : Scaffold(
-            body: SafeArea(
-              child: ListView.builder(
-                  itemCount: alerts.length,
-                  itemBuilder: (contex, index) {
-                    return Text(alerts[index].nombre.toString());
-                  }),
-            ),
-          );
+    return alerts.isNotEmpty
+        ? Scaffold(
+            body: Center(child: ListView.builder(
+              itemCount: alerts.length,
+              itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(alerts[index].nombre),
+            );
+          })))
+        : IndicatorFachero();
   }
 }
