@@ -1,22 +1,29 @@
-// import 'dart:convert';
-// import 'package:alerta_temprana_scz/models/Alert.dart';
-// import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// class AlertasServices {
-//   Future getAlerts(String nombre) async {
-//     try {
-//       final uri = Uri.parse('http://10.0.2.2:8000/api/alerts/getAlerts/');
-//       final resp = await http.post(
-//         uri,
-//         headers: {'Content-Type': 'application/json'},
-//         body: {'nombre': nombre},
-//       );
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:mobile_alerta_temprana/models/Alerts.dart';
 
-//       final alertaResponse = alertaResponseFromJson(resp.body);
-//       return alertaResponse.data;
-//     } catch (e) {
-//       print(e);
-//       return e;
-//     }
-//   }
-// }
+class AlertasServices with ChangeNotifier {
+  Future<List<AlertResponse>> getAlerts() async {
+    try {
+      final uri =
+          Uri.parse('http://10.0.2.2/alerta-temprana-scz/public/api/alerts');
+      final resp = await http.get(
+        uri,
+        
+      );
+      print("hfasjfkasd");
+
+      final alertaResponse = alertResponseFromJson(resp.body);
+      alertaResponse.forEach((element) {
+        print(element);
+      });
+      return alertaResponse;
+    } catch (e) {
+      print("error");
+      print(e);
+      return [];
+    }
+  }
+}
