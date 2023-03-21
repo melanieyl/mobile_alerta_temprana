@@ -38,6 +38,6 @@ class _AlertasState extends State<Alertas> {
               title: Text(alerts[index].nombre),
             );
           })))
-        : IndicatorFachero();
+        : const IndicatorFachero();
   }
 }
