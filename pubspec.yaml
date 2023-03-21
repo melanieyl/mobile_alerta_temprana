@@ -44,8 +44,7 @@ dependencies:
   geolocator: ^7.1.0
   image_picker: ^0.8.6+4
   latlong2: ^0.8.1
-  path_provider: ^2.0.13
-  video_player: ^2.6.0
+  path_provider: ^2.0.13 
 
 dev_dependencies:
   flutter_test:

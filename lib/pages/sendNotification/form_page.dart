@@ -295,8 +295,8 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           Center()
                         else
                           Container(
-                            width: 300,
-                            height: 100,
+                            width: responsive.width,
+                            height: responsive.hp(20),
                             child: Expanded(
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -333,16 +333,16 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                               // print(int.parse(eventoId!));
                               // print(latitud);
                               // print(longitud);
-                              crearNotificaciones(
-                                  _idUsuario,
-                                  _textControllerdescripcion.text,
-                                  _imageListP,
-                                  _video2!,
-                                  _creationDateTimeController.text,
-                                  int.parse(eventoId!),
-                                  latitud,
-                                  longitud,
-                                  context);
+                              // crearNotificaciones(
+                              //     _idUsuario,
+                              //     _textControllerdescripcion.text,
+                              //     _imageListP,
+                              //     _video2!,
+                              //     _creationDateTimeController.text,
+                              //     int.parse(eventoId!),
+                              //     latitud,
+                              //     longitud,
+                              //     context);
                             })
                       ],
                     ),
