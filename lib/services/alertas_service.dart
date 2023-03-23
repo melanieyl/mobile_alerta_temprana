@@ -7,8 +7,8 @@ import 'package:mobile_alerta_temprana/models/Alerts.dart';
 class AlertasServices with ChangeNotifier {
   static Future<List<AlertResponse>> getAlerts() async {
     try {
-      final uri =
-          Uri.parse('http://10.0.2.2/alerta-temprana-scz/public/api/alerts');
+      final uri = Uri.parse(
+          'http://192.168.132.241/alerta-temprana-scz/public/api/alerts');
       final resp = await http.get(uri, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -23,7 +23,7 @@ class AlertasServices with ChangeNotifier {
       });
       return listAlerts;
     } catch (e) {
-      print(e);
+      print('no me da nada');
       return [];
     }
   }

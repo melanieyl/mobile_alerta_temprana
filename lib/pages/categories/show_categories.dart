@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_alerta_temprana/models/Evento.dart';
+import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/pages/show_alerts/contact_list_page.dart';
+import 'package:mobile_alerta_temprana/services/eventos_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 
 class CategoriesPage extends StatefulWidget {
@@ -9,9 +10,16 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
+  List<EventoResponse> eventos = [];
+
   // List<Event> eventosCategories = [];
   @override
   void initState() {
+    EventosServices.getEventos().then((listEventos) => {
+          setState(() {
+            eventos = listEventos;
+          }),
+        });
     super.initState();
   }
 
@@ -64,20 +72,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                     MaterialPageRoute(
                                         builder: (context) => MicrosListPage(
                                             nombreEvento:
-                                                eventos[index2].nombre)));
+                                                eventos[index2].tipoEvento)));
                               },
                               child: Container(
                                 height: responsive.hp(20),
                                 width: responsive.wp(40),
-                                // height: MediaQuery.of(context).size.height,
-                                // width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                    image:
-                                        AssetImage(eventos[index2].foto.path),
-                                    fit: BoxFit.cover,
-                                  ),
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Image.network(
+                                  eventos[index2].foto,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
@@ -85,7 +90,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                               height: responsive.hp(2.5),
                             ),
                             Text(
-                              eventos[index2].nombre,
+                              eventos[index2].tipoEvento,
                               softWrap: true,
                               maxLines: 2,
                               style: TextStyle(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile_alerta_temprana/models/Alert.dart';
-import 'package:mobile_alerta_temprana/pages/sendNotification/form_page.dart';
-import 'package:mobile_alerta_temprana/pages/show_alerts/alert.dart';
+import 'package:mobile_alerta_temprana/models/Alerts.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
-import 'package:provider/provider.dart';
+
 // import 'package:provider/provider.dart';
 // import 'package:trip_planner/models/specific_line.dart';
 // import 'package:trip_planner/providers/position_provider.dart';
@@ -17,7 +15,7 @@ class MicrosCard extends StatelessWidget {
     this.index,
   });
 
-  Alert alert;
+  AlertResponse alert;
   bool dataComplete;
   int? index;
 
@@ -39,15 +37,16 @@ class MicrosCard extends StatelessWidget {
               height: responsive.hp(5),
               width: responsive.wp(15),
               decoration: BoxDecoration(
-                color: (alert.estado.nombre == 'Critico')
-                    ? alert.estado.rojo
-                    : ((alert.estado.nombre == 'Muy alto')
-                        ? alert.estado.naranja
-                        : ((alert.estado.nombre == 'Moderado')
-                            ? alert.estado.amarillo
-                            : (alert.estado.nombre == 'Bajo')
-                                ? alert.estado.verde
-                                : Colors.black)),
+                color: Colors.deepPurple,
+                // color: (alert.estado.nombre == 'Critico')
+                //     ? alert.estado.rojo
+                //     : ((alert.estado.nombre == 'Muy alto')
+                //         ? alert.estado.naranja
+                //         : ((alert.estado.nombre == 'Moderado')
+                //             ? alert.estado.amarillo
+                //             : (alert.estado.nombre == 'Bajo')
+                //                 ? alert.estado.verde
+                //                 : Colors.black)),
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(10),
                 ),
@@ -65,17 +64,18 @@ class MicrosCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: (alert.estado.nombre == 'Critico')
-                    ? alert.estado.rojo
-                    : ((alert.estado.nombre == 'Muy alto')
-                        ? alert.estado.naranja
-                        : ((alert.estado.nombre == 'Moderado')
-                            ? alert.estado.amarillo
-                            : (alert.estado.nombre == 'Bajo')
-                                ? alert.estado.verde
-                                : Colors.white)),
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: Colors.deepPurple,
+                // color: (alert.estado.nombre == 'Critico')
+                //     ? alert.estado.rojo
+                //     : ((alert.estado.nombre == 'Muy alto')
+                //         ? alert.estado.naranja
+                //         : ((alert.estado.nombre == 'Moderado')
+                //             ? alert.estado.amarillo
+                //             : (alert.estado.nombre == 'Bajo')
+                //                 ? alert.estado.verde
+                //                 : Colors.white)),
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -112,9 +112,11 @@ class MicrosCard extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: '\n' +
+                                      '\n' +
+                                      'Fecha: ' +
                                       alert.fecha.toString().substring(0, 10) +
                                       "       hora: " +
-                                      alert.fecha.toString().substring(11, 16),
+                                      alert.hora.toString(),
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal,
@@ -160,7 +162,7 @@ class MicrosCard extends StatelessWidget {
                     SizedBox(height: responsive.hp(3)),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.description,
                           size: 40,
                           color: Colors.black54,
@@ -169,7 +171,7 @@ class MicrosCard extends StatelessWidget {
                         Flexible(
                           child: Text.rich(
                             TextSpan(
-                              text: alert.detalle.substring(0, 70) + ' ...',
+                              text: alert.description.substring(0, 70) + ' ...',
                             ),
                             style: const TextStyle(
                               fontSize: 16,
@@ -204,34 +206,34 @@ class MicrosCard extends StatelessWidget {
                     //   ],
                     // ),
                     SizedBox(height: responsive.hp(4)),
-                    Center(
-                      child: MaterialButton(
-                        minWidth: 200.0,
-                        height: 40.0,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_)
-                                      // => Alertas(
-                                      //       alerta: alert,
-                                      //     )
-                                      =>
-                                      FormularioEmergencia()));
-                        },
-                        color: (alert.estado.nombre == 'Critico')
-                            ? alert.estado.rojo
-                            : ((alert.estado.nombre == 'Muy alto')
-                                ? alert.estado.naranja
-                                : ((alert.estado.nombre == 'Moderado')
-                                    ? alert.estado.amarillo
-                                    : (alert.estado.nombre == 'Bajo')
-                                        ? alert.estado.verde
-                                        : Colors.white)),
-                        child: const Text('Ver mas',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
+                    // Center(
+                    //   child: MaterialButton(
+                    //     minWidth: 200.0,
+                    //     height: 40.0,
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (_)
+                    //                   // => Alertas(
+                    //                   //       alerta: alert,
+                    //                   //     )
+                    //                   =>
+                    //                   FormularioEmergencia()));
+                    //     },
+                    //     color: (alert.estado.nombre == 'Critico')
+                    //         ? alert.estado.rojo
+                    //         : ((alert.estado.nombre == 'Muy alto')
+                    //             ? alert.estado.naranja
+                    //             : ((alert.estado.nombre == 'Moderado')
+                    //                 ? alert.estado.amarillo
+                    //                 : (alert.estado.nombre == 'Bajo')
+                    //                     ? alert.estado.verde
+                    //                     : Colors.white)),
+                    //     child: const Text('Ver mas',
+                    //         style: TextStyle(color: Colors.white)),
+                    //   ),
+                    // ),
 
                     // Column(
                     //   children: [

@@ -1,27 +1,36 @@
-import 'package:flutter/material.dart';
+// To parse this JSON data, do
+//
+//     final estadoResponse = estadoResponseFromJson(jsonString);
 
-class Estado {
+import 'dart:convert';
+
+List<EstadoResponse> estadoResponseFromJson(String str) =>
+    List<EstadoResponse>.from(
+        json.decode(str).map((x) => EstadoResponse.fromJson(x)));
+
+String estadoResponseToJson(List<EstadoResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class EstadoResponse {
+  EstadoResponse({
+    required this.id,
+    required this.nombre,
+    required this.color,
+  });
+
   int id;
   String nombre;
-  Color rojo;
-  Color naranja;
-  Color amarillo;
-  Color verde;
-  int grado;
+  String color;
 
-  Estado(
-      {required this.id,
-      required this.nombre,
-      this.rojo = const Color(0xfff80000),
-      this.naranja = const Color(0xffffa500),
-      this.amarillo = const Color(0xffffff00),
-      this.verde = const Color(0xff008000),
-      required this.grado});
+  factory EstadoResponse.fromJson(Map<String, dynamic> json) => EstadoResponse(
+        id: json["id"],
+        nombre: json["nombre"],
+        color: json["color"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nombre": nombre,
+        "color": color,
+      };
 }
-
-final estados = [
-  Estado(id: 1, nombre: "Critico", grado: 1),
-  Estado(id: 2, nombre: "Muy alto", grado: 1),
-  Estado(id: 3, nombre: "Moderado", grado: 1),
-  Estado(id: 4, nombre: "Bajo", grado: 1),
-];

@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mobile_alerta_temprana/models/eventos.dart';
+import 'package:mobile_alerta_temprana/models/Eventos.dart';
+import 'package:mobile_alerta_temprana/services/eventos_service.dart';
 import 'package:mobile_alerta_temprana/services/notificaiones.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 
@@ -28,11 +29,17 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
   final int _maxImageCount = 5;
   bool isVerifying = false;
 
-  List<Eventos> eventos = [
-    Eventos(id: 1, nombre: 'incendio'),
-    Eventos(id: 2, nombre: 'inundacion'),
-    Eventos(id: 3, nombre: 'sequia')
-  ];
+  List<EventoResponse> eventos = [];
+
+  @override
+  void initState() {
+    EventosServices.getEventos().then((listEventos) => {
+          setState(() {
+            eventos = listEventos;
+          }),
+        });
+    super.initState();
+  }
 
   DateTime? _creationDateTime = DateTime.now();
   String? eventoId;
@@ -179,9 +186,10 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                             ),
                             value: eventoId,
                             items: eventos.map((e) {
+                              print(e);
                               return DropdownMenuItem(
                                   value: e.id.toString(),
-                                  child: Text(e.nombre));
+                                  child: Text(e.tipoEvento));
                             }).toList(),
                             onChanged: (newValue) {
                               setState(() {
