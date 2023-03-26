@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/services/eventos_service.dart';
 import 'package:mobile_alerta_temprana/services/notificaiones.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
+
+import '../../helpers/progress_indicator_fachero.dart';
 
 class FormularioEmergencia extends StatefulWidget {
   const FormularioEmergencia({super.key});
@@ -167,6 +170,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                         SizedBox(
                           height: responsive.hp(2),
                         ),
+
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 32, vertical: 10),
@@ -177,27 +181,35 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
-                          child: DropdownButton(
-                            style: TextStyle(
-                                color: Colors.cyan.shade900, fontSize: 20),
-                            hint: const Text(
-                              "seleccione un evento",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            value: eventoId,
-                            items: eventos.map((e) {
-                              print(e);
-                              return DropdownMenuItem(
-                                  value: e.id.toString(),
-                                  child: Text(e.tipoEvento));
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                eventoId = newValue.toString();
-                                print(eventoId);
-                              });
-                            },
-                          ),
+                          child: eventos.isNotEmpty
+                              ? DropdownButton(
+                                  style: TextStyle(
+                                      color: Colors.cyan.shade900,
+                                      fontSize: 20),
+                                  hint: const Text(
+                                    "seleccione un evento",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  value: eventoId,
+                                  items: eventos.map((e) {
+                                    print(e);
+                                    return DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.tipoEvento));
+                                  }).toList(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      eventoId = newValue.toString();
+                                      print(eventoId);
+                                    });
+                                  },
+                                )
+                              : Center(
+                                  child: SpinKitCircle(
+                                    size: responsive.dp(3),
+                                    color: Colors.black,
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: responsive.hp(2),

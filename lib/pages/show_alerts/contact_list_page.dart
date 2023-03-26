@@ -63,28 +63,28 @@ class MicrosListPageState extends State<MicrosListPage> {
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-    return alerts.isNotEmpty
-        ? Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.nombreEvento,
-                style: TextStyle(color: Colors.black),
-              ),
-              backgroundColor: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.nombreEvento,
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color.fromARGB(255, 155, 240, 58), Colors.white],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
             ),
-            body: SafeArea(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color.fromARGB(255, 155, 240, 58), Colors.white],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                child: Stack(children: [
-                  PerspectiveListView(
+          ),
+          child: Stack(children: [
+            alerts.isNotEmpty
+                ? PerspectiveListView(
                     visualizedItems: alerts.length,
                     itemExtent: responsive.hp(47),
                     initialIndex: alerts.length - 1,
@@ -115,63 +115,63 @@ class MicrosListPageState extends State<MicrosListPage> {
                         alert: alerts[index],
                       );
                     }),
-                  ),
-                  Container(
-                    //padding: EdgeInsets.only(top: 20),
-                    height: responsive.hp(10),
-                    width: double.infinity,
-                    color: Colors.transparent,
-                    child: Row(
-                      children: [
-                        Container(
-                          height: responsive.hp(7),
-                          width: responsive.wp(70),
-                          child: Expanded(
-                            child: TextField(
-                                controller: _searchController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                  ),
-                                  //suffixIcon: Icon(Icons.clear),
-                                  hintText: "Buscar",
-                                  prefixIcon: Icon(Icons.search),
-                                )),
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              _opciones(context);
-                            },
-                            icon: Icon(
-                              Icons.format_list_numbered_rounded,
-                              size: 33,
-                              color: Colors.black54,
-                            )),
-                        IconButton(
-                          icon: Icon(Icons.calendar_today),
-                          onPressed: () async {
-                            DateTime? selectedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2025),
-                            );
-                            // Hacer algo con la fecha seleccionada
-                          },
-                        ),
-                      ],
-                    ),
                   )
-                ]),
-                //---------------------------------------
-                // Drawer
-                //---------------------------------------
+                : CargandoSquare(),
+            Container(
+              //padding: EdgeInsets.only(top: 20),
+              height: responsive.hp(10),
+              width: double.infinity,
+              color: Colors.transparent,
+              child: Row(
+                children: [
+                  Container(
+                    height: responsive.hp(7),
+                    width: responsive.wp(70),
+                    child: Expanded(
+                      child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            //suffixIcon: Icon(Icons.clear),
+                            hintText: "Buscar",
+                            prefixIcon: Icon(Icons.search),
+                          )),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        _opciones(context);
+                      },
+                      icon: Icon(
+                        Icons.format_list_numbered_rounded,
+                        size: 33,
+                        color: Colors.black54,
+                      )),
+                  IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2025),
+                      );
+                      // Hacer algo con la fecha seleccionada
+                    },
+                  ),
+                ],
               ),
-            ),
-          )
-        : const IndicatorFachero();
+            )
+          ]),
+          //---------------------------------------
+          // Drawer
+          //---------------------------------------
+        ),
+      ),
+    );
   }
 }

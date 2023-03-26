@@ -75,16 +75,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                 eventos[index2].tipoEvento)));
                               },
                               child: Container(
-                                height: responsive.hp(20),
-                                width: responsive.wp(40),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Image.network(
-                                  eventos[index2].foto,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                  height: responsive.hp(20),
+                                  width: responsive.wp(40),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                  child: FadeInImage(
+                                    image: NetworkImage(eventos[index2].foto),
+                                    placeholder:
+                                        const AssetImage('imgs/loading.gif'),
+                                  )),
                             ),
                             SizedBox(
                               height: responsive.hp(2.5),

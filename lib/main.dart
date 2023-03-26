@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_alerta_temprana/home.dart';
-import 'package:mobile_alerta_temprana/pages/show_alerts/prueba.dart';
 
 void main() {
   runApp(
