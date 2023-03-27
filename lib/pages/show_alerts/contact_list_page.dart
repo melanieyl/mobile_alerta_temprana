@@ -138,7 +138,7 @@ class MicrosListPageState extends State<MicrosListPage> {
                             ),
                             //suffixIcon: Icon(Icons.clear),
                             hintText: "Buscar",
-                            prefixIcon: Icon(Icons.search),
+                            prefixIcon: const Icon(Icons.search),
                           )),
                     ),
                   ),
