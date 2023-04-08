@@ -6,9 +6,9 @@ import 'package:mobile_alerta_temprana/global/enviroment.dart';
 import 'package:mobile_alerta_temprana/models/Alerts.dart';
 
 class AlertasServices with ChangeNotifier {
-  static Future<List<AlertResponse>> getAlerts() async {
+  Future<List<AlertResponse>> getAlerts(int id) async {
     try {
-      final uri = Uri.parse('${Environment.apiUrl}/alerts');
+      final uri = Uri.parse('${Environment.apiUrl}/alertsUnidadTecnica/$id');
       final resp = await http.get(uri, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

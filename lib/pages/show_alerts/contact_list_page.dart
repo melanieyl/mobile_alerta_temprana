@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_alerta_temprana/helpers/progress_indicator_fachero.dart';
+import 'package:mobile_alerta_temprana/models/AlertaEnvio.dart';
 import 'package:mobile_alerta_temprana/models/Alerts.dart';
+import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/pages/show_alerts/alert.dart';
+import 'package:mobile_alerta_temprana/services/alertaenvio_service.dart';
 import 'package:mobile_alerta_temprana/services/alertas_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/cards.dart';
 import 'package:mobile_alerta_temprana/widgets/perspective_list_view.dart';
 
 class MicrosListPage extends StatefulWidget {
-  const MicrosListPage({required this.nombreEvento, super.key});
-  final String nombreEvento;
+  const MicrosListPage({required this.evento, super.key});
+
+  final EventoResponse evento;
   @override
-  MicrosListPageState createState() => MicrosListPageState();
+  State<MicrosListPage> createState() => MicrosListPageState();
 }
 
 class MicrosListPageState extends State<MicrosListPage> {
@@ -19,7 +23,7 @@ class MicrosListPageState extends State<MicrosListPage> {
 
   @override
   void initState() {
-    AlertasServices.getAlerts().then((listAlerts) => {
+    AlertasServices().getAlerts(widget.evento.id).then((listAlerts) => {
           setState(() {
             alerts = listAlerts;
           }),
@@ -66,7 +70,7 @@ class MicrosListPageState extends State<MicrosListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.nombreEvento,
+          widget.evento.tipoEvento,
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -99,21 +103,22 @@ class MicrosListPageState extends State<MicrosListPage> {
                               builder: (context) => Alertas(
                                     alert: alerts[index!],
                                   )));
-                      // final color = Colors.accents[index! % Colors.accents.length];
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute<dynamic>(
-                      //     builder: (_) => ContactDetailScreen(
-                      //       color: color,
-                      //       distance: 4,
-                      //     ),
-                      //   ),
-                      // );
                     },
                     children: List.generate(alerts.length, (index) {
-                      return MicrosCard(
-                        alert: alerts[index],
-                      );
+                      List<AlertaEnvioResponse> alertEnvio = [];
+                      AlertaEnvioServices().getAlertaEnvio(index).then(
+                          (listAlertaEnvio) => {alertEnvio = listAlertaEnvio});
+                      if (alertEnvio.isEmpty) {
+                        return MicroCard(
+                          alert: alerts[index],
+                          colorestado: Colors.purple,
+                        );
+                      } else {
+                        return MicroCard(
+                          alert: alerts[index],
+                          colorestado: Colors.black,
+                        );
+                      }
                     }),
                   )
                 : CargandoSquare(),

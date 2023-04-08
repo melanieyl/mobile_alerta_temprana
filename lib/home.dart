@@ -7,6 +7,7 @@ import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/boton_gordo.dart';
 import 'package:mobile_alerta_temprana/widgets/boton_link.dart';
 import 'package:mobile_alerta_temprana/widgets/encabezado.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class ItemBoton {
   final IconData icon;
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       }),
       ItemBoton(
         FontAwesomeIcons.whatsapp,
-        'Contáctate con nostros con un toque',
+        'Contáctanos con un toque',
         Colors.green.shade700,
         Colors.green.shade400,
         () {},
@@ -143,10 +144,11 @@ class _HomePageState extends State<HomePage> {
         heroTag: "MainButton",
         backgroundColor: Colors.green.shade900,
         child: Icon(Icons.call),
-        onPressed: () {
-          // socketService.emit('emitir-mensaje',
-          //     {'nombre': 'Flutter', 'mensaje': 'Hola desde Flutter'});
-          // Navigator.pushNamed(context, 'usuarios');
+        onPressed: () async {
+          bool? result = await FlutterPhoneDirectCaller.callNumber('123456789');
+          if (result == true) {
+            print('llamada axitosa');
+          }
         },
       ),
     );

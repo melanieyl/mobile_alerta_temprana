@@ -22,9 +22,8 @@ class AlertResponse {
     required this.geoY,
     required this.urlMapa,
     required this.eventoId,
-    required this.unidadId,
-    this.createdAt,
-    this.updatedAt,
+    required this.nombreUnidadTecnocientifica,
+    required this.telefono,
   });
 
   int id;
@@ -36,9 +35,8 @@ class AlertResponse {
   int geoY;
   String urlMapa;
   int eventoId;
-  int unidadId;
-  dynamic createdAt;
-  dynamic updatedAt;
+  String nombreUnidadTecnocientifica;
+  String telefono;
 
   factory AlertResponse.fromJson(Map<String, dynamic> json) => AlertResponse(
         id: json["id"],
@@ -50,9 +48,8 @@ class AlertResponse {
         geoY: json["geoY"],
         urlMapa: json["url_mapa"],
         eventoId: json["evento_id"],
-        unidadId: json["unidad_id"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        nombreUnidadTecnocientifica: json["nombreUnidadTecnocientifica"],
+        telefono: json["telefono"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,8 +63,7 @@ class AlertResponse {
         "geoY": geoY,
         "url_mapa": urlMapa,
         "evento_id": eventoId,
-        "unidad_id": unidadId,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
+        "nombreUnidadTecnocientifica": nombreUnidadTecnocientifica,
+        "telefono": telefono,
       };
 }

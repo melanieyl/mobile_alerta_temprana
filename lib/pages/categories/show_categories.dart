@@ -66,13 +66,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           children: [
                             RawMaterialButton(
                               onPressed: () {
-                                print("holaaaaa");
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MicrosListPage(
-                                            nombreEvento:
-                                                eventos[index2].tipoEvento)));
+                                              evento: eventos[index2],
+                                            )));
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => MicrosListPage(
+                                //             nombreEvento:
+                                //                 eventos[index2].tipoEvento)));
                               },
                               child: Container(
                                   height: responsive.hp(20),
