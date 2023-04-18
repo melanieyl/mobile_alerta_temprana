@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/services/eventos_service.dart';
+import 'package:mobile_alerta_temprana/services/notificacion_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
+import 'package:video_player/video_player.dart';
 
 class FormularioEmergencia extends StatefulWidget {
   const FormularioEmergencia({super.key});
@@ -30,6 +33,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
   bool isVerifying = false;
   DateTime _creationDateTime = DateTime.now();
   String? eventoId;
+  late VideoPlayerController _controller;
 
   List<EventoResponse> eventos = [];
 
@@ -40,6 +44,8 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
             eventos = listEventos;
           }),
         });
+    _controller = VideoPlayerController.network('');
+
     super.initState();
   }
 
@@ -54,16 +60,30 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     longitud = position.longitude;
   }
 
-  final ImagePicker _video = ImagePicker();
-  // final ImageSource traergalleria = ImageSource.gallery;
-
+  late XFile? video2;
   _selectVideo(ImageSource formato) async {
-    final XFile? video = await _video.pickVideo(source: formato);
+    XFile? video = await ImagePicker().pickVideo(source: formato);
+
     if (video != null) {
-      final File direccionvideo = File(video.path);
       _veifyVideo = true;
-      setState(() {});
+      video2 = video;
+      final File direccionvideo = File(video.path);
+      _controller = VideoPlayerController.file(direccionvideo)
+        ..initialize().then((_) {
+          Navigator.pop(context);
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+        });
     } else {}
+  }
+
+  _deleteVideo() {
+    video2 = null;
+
+    setState(() {
+      _controller.pause();
+      _veifyVideo = false;
+    });
   }
 
   _selectImage(ImageSource formato) async {
@@ -150,6 +170,10 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                   TextField(
                     style: TextStyle(color: Colors.cyan.shade900, fontSize: 18),
                     controller: _telefono,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: _decoration("Numero de Telefono"),
                   ),
                   (isVerifying && _telefono.text.isEmpty)
@@ -222,38 +246,6 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           style: TextStyle(color: Colors.red, fontSize: 15),
                         )
                       : const SizedBox.shrink(),
-
-                  //boton de guardar ubicacion////////////////////////////
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
-                  MaterialButton(
-                      minWidth: MediaQuery.of(context).size.width,
-                      height: responsive.hp(7),
-                      color: Colors.green.shade800,
-                      hoverColor: Colors.green.shade50,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      onPressed: _guardarPocision,
-                      child: Row(
-                        children: <Widget>[
-                          (_miubicacion != false)
-                              ? const Icon(Icons.check, color: Colors.green)
-                              : const Icon(Icons.add, color: Colors.red),
-                          SizedBox(
-                            width: responsive.wp(2),
-                          ),
-                          const Text('Guardar mi actual Ubicacion',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
-                        ],
-                      )),
-                  (isVerifying && _miubicacion == false)
-                      ? const Text(
-                          "haga click en el boton guardar ubicacion",
-                          style: TextStyle(color: Colors.red, fontSize: 15),
-                        )
-                      : SizedBox.shrink(),
                   //boton para guardar un video
                   SizedBox(
                     height: responsive.hp(2),
@@ -282,6 +274,56 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           ),
                         ],
                       )),
+                  //mostar el video
+                  if (_veifyVideo == false)
+                    const SizedBox.shrink()
+                  else
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: responsive.hp(5),
+                        ),
+                        Center(
+                          child: _controller.value.isInitialized
+                              ? AspectRatio(
+                                  aspectRatio: _controller.value.aspectRatio,
+                                  child: VideoPlayer(_controller),
+                                )
+                              : Container(),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: MaterialButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.value.isPlaying
+                                        ? _controller.pause()
+                                        : _controller.play();
+                                  });
+                                },
+                                child: Icon(
+                                  _controller.value.isPlaying
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _deleteVideo();
+                                },
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
 
                   //botton para agregar imagenes
                   SizedBox(
@@ -318,8 +360,8 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // ignore: unnecessary_null_comparison
-                  if (_imageList.length == null)
+                  //mostrar imagenes
+                  if (_imageList.isEmpty)
                     const SizedBox.shrink()
                   else
                     SizedBox(
@@ -330,14 +372,70 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           scrollDirection: Axis.horizontal,
                           itemCount: _imageList.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.file(File(_imageListP[index])),
-                            );
+                            return (_imageListP.isNotEmpty &&
+                                    _imageListP.length > index)
+                                ? Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.file(
+                                          File(_imageListP[index]),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _imageListP.removeAt(index);
+                                              _imageList.removeAt(index);
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox.shrink();
                           },
                         ),
                       ),
                     ),
+                  SizedBox(
+                    height: responsive.hp(2),
+                  ),
+                  MaterialButton(
+                      minWidth: MediaQuery.of(context).size.width,
+                      height: responsive.hp(7),
+                      color: Colors.green.shade800,
+                      hoverColor: Colors.green.shade50,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      onPressed: _guardarPocision,
+                      child: Row(
+                        children: <Widget>[
+                          (_miubicacion != false)
+                              ? const Icon(Icons.check, color: Colors.green)
+                              : const Icon(Icons.add, color: Colors.red),
+                          SizedBox(
+                            width: responsive.wp(2),
+                          ),
+                          const Text('Guardar mi actual Ubicacion',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ],
+                      )),
+                  (isVerifying && _miubicacion == false)
+                      ? const Text(
+                          "haga click en el boton guardar ubicacion",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      : SizedBox.shrink(),
+
                   SizedBox(
                     height: responsive.hp(4),
                   ),
@@ -360,16 +458,32 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                             !_miubicacion ||
                             (eventoId == null)) {
                           isVerifying = true;
-                          Timer(Duration(seconds: 5), () {
+                          Timer(const Duration(seconds: 5), () {
                             // <-- Delay here
                             setState(() {
                               isVerifying = false; // <-- Code run after delay
                             });
                           });
-                          setState(() {});
+
                           return;
                         }
-                        Navigator.pop(context);
+                        if (_imageList.isNotEmpty) {
+                          for (var i = 0; i < _imageList.length; i++) {
+                            NotificationService()
+                                .uploadImage(_imageList[i])
+                                .then((value) => null);
+                          }
+                        }
+                        NotificationService()
+                            .uploadImage(video2)
+                            .then((value) => null);
+
+                        // AlertDialog(
+                        //   content: Text('imagenes subidas exitosamente' +
+                        //       _imageListP.toString()),
+                        // );
+
+                        // Navigator.pop(context);
                       })
                 ],
               ),

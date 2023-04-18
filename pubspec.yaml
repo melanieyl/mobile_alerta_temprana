@@ -49,6 +49,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.1.10
   whatsapp_unilink: ^2.1.0
+  video_player: ^2.6.1
 
 dev_dependencies:
   flutter_test:
