@@ -48,10 +48,10 @@ class NotificationService with ChangeNotifier {
   //     return [];
   //   }
   // }
-  Future<void> uploadImage(XFile? imageFile) async {
+  Future<void> uploadImage(File imageFile) async {
     final url = Uri.parse('${Environment.apiUrl}/api-save-image');
     final request = http.MultipartRequest('POST', url);
-    final file = await http.MultipartFile.fromPath('file', imageFile!.path);
+    final file = await http.MultipartFile.fromPath('file', imageFile.path);
     request.files.add(file);
     final response = await request.send();
     if (response.statusCode == 200) {

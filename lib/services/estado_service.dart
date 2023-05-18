@@ -6,7 +6,7 @@ import 'package:mobile_alerta_temprana/models/Estado.dart';
 import 'package:mobile_alerta_temprana/global/enviroment.dart';
 
 class EstadosServices with ChangeNotifier {
-  static Future<List<EstadoResponse>> getEstados() async {
+  Future<List<EstadoResponse>> getEstados() async {
     try {
       final uri = Uri.parse('${Environment.apiUrl}/estado');
 
@@ -19,6 +19,7 @@ class EstadosServices with ChangeNotifier {
       final List<EstadoResponse> listEstados =
           estadoResponseFromJson(jsonEncode(respuesta));
       listEstados.forEach((element) {});
+
       return listEstados;
     } catch (e) {
       print('mi errorosndu:' + e.toString());

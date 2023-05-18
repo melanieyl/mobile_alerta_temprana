@@ -23,13 +23,13 @@ class MicrosListPageState extends State<MicrosListPage> {
 
   @override
   void initState() {
+    super.initState();
     AlertasServices().getAlerts(widget.evento.id).then((listAlerts) => {
           setState(() {
             alerts = listAlerts;
           }),
         });
-    print('$alerts');
-    super.initState();
+    print('a qui estoy imprimiendo las lsita ' + '$alerts');
   }
 
   final _searchController = TextEditingController();
@@ -105,20 +105,13 @@ class MicrosListPageState extends State<MicrosListPage> {
                                   )));
                     },
                     children: List.generate(alerts.length, (index) {
-                      List<AlertaEnvioResponse> alertEnvio = [];
-                      AlertaEnvioServices().getAlertaEnvio(index).then(
-                          (listAlertaEnvio) => {alertEnvio = listAlertaEnvio});
-                      if (alertEnvio.isEmpty) {
-                        return MicroCard(
-                          alert: alerts[index],
-                          colorestado: Colors.purple,
-                        );
-                      } else {
-                        return MicroCard(
-                          alert: alerts[index],
-                          colorestado: Colors.black,
-                        );
-                      }
+                      return MicroCard(
+                        alert: alerts[index],
+                        colorestado: Color.fromARGB(255, 227, 186, 235),
+                      );
+                      // return Text('number' +
+                      //     '$index' +
+                      //     alerts[index].description.toString());
                     }),
                   )
                 : CargandoSquare(),
@@ -142,7 +135,7 @@ class MicrosListPageState extends State<MicrosListPage> {
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                             //suffixIcon: Icon(Icons.clear),
-                            hintText: "Buscar",
+                            hintText: alerts.length.toString(),
                             prefixIcon: const Icon(Icons.search),
                           )),
                     ),

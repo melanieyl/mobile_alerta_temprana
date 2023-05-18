@@ -12,16 +12,15 @@ String estadoResponseToJson(List<EstadoResponse> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class EstadoResponse {
+  int id;
+  String nombre;
+  String color;
+
   EstadoResponse({
     required this.id,
     required this.nombre,
     required this.color,
   });
-
-  int id;
-  String nombre;
-  String color;
-
   factory EstadoResponse.fromJson(Map<String, dynamic> json) => EstadoResponse(
         id: json["id"],
         nombre: json["nombre"],

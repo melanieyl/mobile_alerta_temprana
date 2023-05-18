@@ -26,7 +26,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
   bool _miubicacion = false;
   late final double latitud;
   late final double longitud;
-  final List<XFile?> _imageList = [];
+  final List<File?> _imageList = [];
   final List<String> _imageListP = [];
 
   final int _maxImageCount = 5;
@@ -49,6 +49,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     super.initState();
   }
 
+//guardar la pocision
   Future<void> _guardarPocision() async {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
@@ -60,13 +61,14 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     longitud = position.longitude;
   }
 
-  late XFile? video2;
+//guardar los videos
+  late File video2;
   _selectVideo(ImageSource formato) async {
     XFile? video = await ImagePicker().pickVideo(source: formato);
 
     if (video != null) {
       _veifyVideo = true;
-      video2 = video;
+      video2 = File(video.path);
       final File direccionvideo = File(video.path);
       _controller = VideoPlayerController.file(direccionvideo)
         ..initialize().then((_) {
@@ -77,21 +79,24 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     } else {}
   }
 
-  _deleteVideo() {
-    video2 = null;
-
+  _deleteVideo() async {
+    //  video2 = File(video2.path); //otro cambio
+    final file = File(video2.path);
+    await file.writeAsString('', flush: true);
     setState(() {
       _controller.pause();
       _veifyVideo = false;
     });
   }
 
+//guardar las imagenes
   _selectImage(ImageSource formato) async {
     if (_imageList.length < _maxImageCount) {
       XFile? picker = await ImagePicker().pickImage(source: formato);
       if (picker != null) {
+        final File imagen = File(picker.path);
         setState(() {
-          _imageList.add(picker);
+          _imageList.add(imagen);
           _imageListP.add(picker.path);
         });
       }
@@ -123,9 +128,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: responsive.hp(1),
-                  ),
+                  SizedBox(height: responsive.hp(1)),
                   //la fecha actual
                   Container(
                     width: responsive.width,
@@ -147,9 +150,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                     ),
                   ),
                   //nombre y apellido
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                  SizedBox(height: responsive.hp(2)),
 
                   TextField(
                       style:
@@ -164,9 +165,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                       : SizedBox.shrink(),
 
                   //telefono///////////////////////////////////
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                  SizedBox(height: responsive.hp(2)),
                   TextField(
                     style: TextStyle(color: Colors.cyan.shade900, fontSize: 18),
                     controller: _telefono,
@@ -181,11 +180,9 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           "Complete el campo telefono",
                           style: TextStyle(color: Colors.red, fontSize: 15),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                   //La descripcion////////////////////////////////////////////
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                  SizedBox(height: responsive.hp(2)),
 
                   TextField(
                       maxLines: 3,
@@ -198,10 +195,8 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           "Complete el campo descripcion",
                           style: TextStyle(color: Colors.red, fontSize: 15),
                         )
-                      : SizedBox.shrink(),
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                      : const SizedBox.shrink(),
+                  SizedBox(height: responsive.hp(2)),
                   //el evento//////////////////
 
                   Container(
@@ -247,9 +242,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                         )
                       : const SizedBox.shrink(),
                   //boton para guardar un video
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                  SizedBox(height: responsive.hp(2)),
                   MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       height: responsive.hp(7),
@@ -326,9 +319,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                     ),
 
                   //botton para agregar imagenes
-                  SizedBox(
-                    height: responsive.hp(2),
-                  ),
+                  SizedBox(height: responsive.hp(2)),
                   MaterialButton(
                     minWidth: MediaQuery.of(context).size.width,
                     height: responsive.hp(7),
@@ -345,9 +336,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                       ),
                       const Text('Agregar imágenes',
                           style: TextStyle(color: Colors.white, fontSize: 20)),
-                      SizedBox(
-                        width: responsive.wp(5),
-                      ),
+                      SizedBox(width: responsive.wp(5)),
                       Text(
                         '${_imageList.length} / $_maxImageCount ',
                         style: const TextStyle(
@@ -357,9 +346,7 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                       ),
                     ]),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   //mostrar imagenes
                   if (_imageList.isEmpty)
                     const SizedBox.shrink()
@@ -470,7 +457,8 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                         if (_imageList.isNotEmpty) {
                           for (var i = 0; i < _imageList.length; i++) {
                             NotificationService()
-                                .uploadImage(_imageList[i])
+                                .uploadImage(
+                                    _imageList[i]!) //le estoy añadiendo un !
                                 .then((value) => null);
                           }
                         }
