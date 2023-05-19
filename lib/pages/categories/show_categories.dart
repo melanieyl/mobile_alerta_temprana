@@ -81,7 +81,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                 //                 eventos[index2].tipoEvento)));
                               },
                               child: Container(
-                                  height: responsive.hp(20),
+                                  height: responsive.hp(15),
                                   width: responsive.wp(40),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40),
