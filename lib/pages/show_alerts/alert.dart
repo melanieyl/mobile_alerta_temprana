@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile_alerta_temprana/helpers/progress_indicator_fachero.dart';
 import 'package:mobile_alerta_temprana/models/AlertaEnvio.dart';
 import 'package:mobile_alerta_temprana/models/Alerts.dart';
-import 'package:mobile_alerta_temprana/models/Estado.dart';
 import 'package:mobile_alerta_temprana/models/ImagenAlerta.dart';
 import 'package:mobile_alerta_temprana/services/alertaenvio_service.dart';
-import 'package:mobile_alerta_temprana/services/estado_service.dart';
 import 'package:mobile_alerta_temprana/services/imagen_alerta_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
-
 import '../../widgets/card.dart';
 
 class Alertas extends StatefulWidget {
@@ -51,6 +48,20 @@ class _AlertasState extends State<Alertas> {
 
     super.initState();
   }
+
+  final List<String> imageUrls = [];
+  String networkingimagen = 'http://192.168.132.16/alerta-temprana-scz/public';
+
+  imagenesEnvios() {
+    for (var i = 0; i < imageneEnvio.length; i++) {
+      networkingimagen = networkingimagen + imageneEnvio[i].path;
+      imageUrls.add(networkingimagen);
+    }
+  }
+  // List<String> imagenes(){
+
+  //    return
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -174,36 +185,26 @@ class _AlertasState extends State<Alertas> {
                       widget.alert.hora.toString().substring(0, 5),
                   sizetext: 15),
           Center(
-            child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                elevation: 5,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      widget.alert.nombre.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
+            child: Carddiseno(
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  widget.alert.nombre.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                )),
-          ),
-          Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)),
-              elevation: 10,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: const FadeInImage(
-                  image: NetworkImage(
-                      'https://th.bing.com/th/id/R.7ff5f870425d3d7d0cf98228c726d359?rik=4kwZ5kHRmY9gmA&pid=ImgRaw&r=0.jpg'),
-                  placeholder: AssetImage('imgs/loading.gif'),
                 ),
-              )),
+              ),
+            ),
+          ),
+          Carddiseno(
+            const FadeInImage(
+              image: NetworkImage(
+                  'https://th.bing.com/th/id/R.7ff5f870425d3d7d0cf98228c726d359?rik=4kwZ5kHRmY9gmA&pid=ImgRaw&r=0.jpg'),
+              placeholder: AssetImage('imgs/loading.gif'),
+            ),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -229,12 +230,30 @@ class _AlertasState extends State<Alertas> {
   }
 
   Widget _contentAlertaEnvio() {
-    final List<String> imageUrls = [
-      'imgs/1.jpg',
-      'imgs/2.jpg',
-      'imgs/3.jpg',
-      // Agrega más URLs de imágenes aquí
+    final List<String> imagenesamarillas = [
+      'imgs/amarillo/amarillo.jpg',
     ];
+    final List<String> imagenesrojas = [
+      'imgs/rojo/1.jpg',
+      'imgs/rojo/2.jpg',
+      'imgs/rojo/3.jpg',
+      'imgs/rojo/4.jpg',
+      'imgs/rojo/5.jpg',
+      'imgs/rojo/8.jpg',
+      'imgs/rojo/9.jpg',
+      'imgs/rojo/10.jpg',
+    ];
+    final List<String> imagenesverdes = [
+      'imgs/verde/verda.jpg',
+      'imgs/verde/verde2.jpg',
+      'imgs/verde/verde3.jpg',
+      'imgs/verde/verde4.jpg',
+      'imgs/verde/verde5.jpg',
+    ];
+    final List<String> imagenesnaranja = [
+      'imgs/naranaja/naranja.jpg',
+    ];
+
     return SafeArea(
       child: alertEnvio.isNotEmpty
           ? Column(
@@ -250,23 +269,18 @@ class _AlertasState extends State<Alertas> {
                       size: 60,
                     ),
                     Flexible(
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)),
-                          elevation: 5,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                widget.alert.nombre.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
+                      child: Carddiseno(
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            widget.alert.nombre.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 20,
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -286,66 +300,51 @@ class _AlertasState extends State<Alertas> {
                                 Icons.podcasts_outlined,
                                 color: myColor,
                               ),
-                              Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                  elevation: 10,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Column(
-                                      children: <Widget>[
-                                        const FadeInImage(
-                                          image: NetworkImage(
-                                              'https://th.bing.com/th/id/R.7ff5f870425d3d7d0cf98228c726d359?rik=4kwZ5kHRmY9gmA&pid=ImgRaw&r=0.jpg'),
-                                          placeholder:
-                                              AssetImage('imgs/loading.gif'),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text(alertaenvio.fecha
-                                                  .toString()
-                                                  .substring(0, 11) +
-                                              alertaenvio.hora.substring(0, 5)),
-                                        ),
-                                      ],
+                              Carddiseno(
+                                Column(
+                                  children: <Widget>[
+                                    const FadeInImage(
+                                      image: NetworkImage(
+                                          'https://th.bing.com/th/id/R.7ff5f870425d3d7d0cf98228c726d359?rik=4kwZ5kHRmY9gmA&pid=ImgRaw&r=0.jpg'),
+                                      placeholder:
+                                          AssetImage('imgs/loading.gif'),
                                     ),
-                                  )),
-                              Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                  elevation: 10,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text('DESCRIPCION '),
-                                        ),
-                                        Cardenvio(
-                                            titulo: alertaenvio.description,
-                                            sizetext: 15),
-                                      ],
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(alertaenvio.fecha
+                                              .toString()
+                                              .substring(0, 11) +
+                                          alertaenvio.hora.substring(0, 5)),
                                     ),
-                                  )),
-                              Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                  elevation: 10,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text('RECOMENDACION'),
-                                        ),
-                                        Cardenvio(
-                                            titulo: alertaenvio.recomendacion,
-                                            sizetext: 15),
-                                      ],
+                                  ],
+                                ),
+                              ),
+                              Carddiseno(
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text('DESCRIPCION '),
                                     ),
-                                  )),
+                                    Cardenvio(
+                                        titulo: alertaenvio.description,
+                                        sizetext: 15),
+                                  ],
+                                ),
+                              ),
+                              Carddiseno(
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text('RECOMENDACION'),
+                                    ),
+                                    Cardenvio(
+                                        titulo: alertaenvio.recomendacion,
+                                        sizetext: 15),
+                                  ],
+                                ),
+                              ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.white60, // background
@@ -357,29 +356,29 @@ class _AlertasState extends State<Alertas> {
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
-                              Card(
-                                child: Container(
-                                  height: 200,
-                                  child: PageView.builder(
-                                    itemCount: imageUrls.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              imageUrls[index],
-                                              fit: BoxFit.cover,
-                                            ),
-                                            Text('descripcion de imagen ')
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.white60, // background
+                                  // foreground
+                                ),
+                                onPressed: () {},
+                                child: Text(
+                                  'Ver Mapa',
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
+                              (alertaenvio.nombreEstado == 'Crítico')
+                                  ? imagenes(imagenesrojas)
+                                  : SizedBox.shrink(),
+                              (alertaenvio.nombreEstado == 'Muy alto')
+                                  ? imagenes(imagenesnaranja)
+                                  : SizedBox.shrink(),
+                              (alertaenvio.nombreEstado == 'Moderado')
+                                  ? imagenes(imagenesamarillas)
+                                  : SizedBox.shrink(),
+                              (alertaenvio.nombreEstado == 'Bajo')
+                                  ? imagenes(imagenesverdes)
+                                  : SizedBox.shrink(),
                             ],
                             //trailing: Text(alertaenvio.fecha.toString()),
                           ),
@@ -391,6 +390,34 @@ class _AlertasState extends State<Alertas> {
               ],
             )
           : const CargandoSquare(),
+    );
+  }
+
+  Card Carddiseno(Widget hijo) {
+    return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        elevation: 5,
+        child: ClipRRect(borderRadius: BorderRadius.circular(30), child: hijo));
+  }
+
+  Card imagenes(List<String> imagenespath) {
+    return Card(
+      color: Colors.transparent,
+      child: Container(
+        height: MediaQuery.of(context).size.height / 3,
+        child: PageView.builder(
+          itemCount: imagenespath.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Image.asset(
+                imagenespath[index],
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

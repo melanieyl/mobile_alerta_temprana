@@ -135,7 +135,7 @@ class MicrosListPageState extends State<MicrosListPage> {
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                             //suffixIcon: Icon(Icons.clear),
-                            hintText: alerts.length.toString(),
+                            hintText: 'buscar',
                             prefixIcon: const Icon(Icons.search),
                           )),
                     ),
