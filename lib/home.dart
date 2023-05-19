@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    
     final Responsive responsive = Responsive.of(context);
     final items = <ItemBoton>[
       ItemBoton(
@@ -71,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // backgroundColor: Colors.red,
       body: Stack(
-        children: <Widget>[
+        children: [
           Container(
             margin: EdgeInsets.only(top: 100),
             child: ListView(
