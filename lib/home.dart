@@ -3,10 +3,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_alerta_temprana/pages/categories/show_categories.dart';
 import 'package:mobile_alerta_temprana/pages/sendNotification/form_page.dart';
+import 'package:mobile_alerta_temprana/providers/formularioprovider.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/boton_gordo.dart';
 import 'package:mobile_alerta_temprana/widgets/boton_link.dart';
 import 'package:mobile_alerta_temprana/widgets/encabezado.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemBoton {
   final IconData icon;
@@ -27,6 +31,18 @@ class _HomePageState extends State<HomePage> {
   static const IconData copyright =
       IconData(0xe198, fontFamily: 'MaterialIcons');
 
+  void launchWhatsapp(
+    String phone,
+    String message,
+  ) async {
+    final url = Uri.parse('https://wa.me/591$phone?text=$message');
+
+    await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     
@@ -39,8 +55,13 @@ class _HomePageState extends State<HomePage> {
         Colors.yellow.shade700,
         Colors.yellowAccent,
         () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const FormularioEmergencia()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => MultiProvider(providers: [
+                        ChangeNotifierProvider(
+                            create: (_) => Formularioprovider())
+                      ], child: FormularioEmergencia())));
         },
       ),
       ItemBoton(FontAwesomeIcons.warning, 'Mostrar Alertas', Colors.red,
@@ -50,10 +71,13 @@ class _HomePageState extends State<HomePage> {
       }),
       ItemBoton(
         FontAwesomeIcons.whatsapp,
-        'Contáctate con nostros con un toque',
+        'Contáctanos con un toque',
         Colors.green.shade700,
         Colors.green.shade400,
-        () {},
+        () {
+          launchWhatsapp(
+              '71310964', 'Emergencia de Gobernación, necesito información');
+        },
       ),
     ];
 
@@ -145,10 +169,11 @@ class _HomePageState extends State<HomePage> {
         heroTag: "MainButton",
         backgroundColor: Colors.green.shade900,
         child: Icon(Icons.call),
-        onPressed: () {
-          // socketService.emit('emitir-mensaje',
-          //     {'nombre': 'Flutter', 'mensaje': 'Hola desde Flutter'});
-          // Navigator.pushNamed(context, 'usuarios');
+        onPressed: () async {
+          bool? result = await FlutterPhoneDirectCaller.callNumber('123456789');
+          if (result == true) {
+            print('llamada axitosa');
+          }
         },
       ),
     );

@@ -49,15 +49,15 @@
 //             onPressed: _pickVideo,
 //             child: Text('Seleccionar video'),
 //           ),
-//           // if (_videoFile != null && _videoPlayerController != null) ...[
-//           //   SizedBox(height: 16),
-//           //   Text('Video seleccionado:'),
-//           //   SizedBox(height: 8),
-//           //   AspectRatio(
-//           //     aspectRatio: 16 / 9,
-//           //     child: VideoPlayer(_videoPlayerController!),
-//           //   ),
-//           // ],
+//           if (_videoFile != null && _videoPlayerController != null) ...[
+//             SizedBox(height: 16),
+//             Text('Video seleccionado:'),
+//             SizedBox(height: 8),
+//             AspectRatio(
+//               aspectRatio: 16 / 9,
+//               child: VideoPlayer(_videoPlayerController!),
+//             ),
+//           ],
 //           if (_videoFile != null && _videoPlayerController != null) ...[
 //             SizedBox(height: 16),
 //             Text('Video seleccionado:'),
@@ -70,7 +70,7 @@
 //                   aspectRatio: 16 / 9,
 //                   autoInitialize: true,
 //                   looping: false,
-//                   // Agrega otras opciones si lo deseas
+//                   Agrega otras opciones si lo deseas
 //                 ),
 //               ),
 //             ),
@@ -82,37 +82,37 @@
 // }
 
 
-// // class _VideoPickerState extends State<VideoPicker> {
-// //   File? _videoFile;
+// class _VideoPickerState extends State<VideoPicker> {
+//   File? _videoFile;
 
-// //   Future<void> _pickVideo() async {
-// //     final pickedFile =
-// //         await ImagePicker().pickVideo(source: ImageSource.gallery);
-// //     if (pickedFile != null) {
-// //       setState(() {
-// //         _videoFile = File(pickedFile.path);
-// //       });
-// //     }
-// //   }
+//   Future<void> _pickVideo() async {
+//     final pickedFile =
+//         await ImagePicker().pickVideo(source: ImageSource.gallery);
+//     if (pickedFile != null) {
+//       setState(() {
+//         _videoFile = File(pickedFile.path);
+//       });
+//     }
+//   }
 
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Column(
-// //       children: [
-// //         ElevatedButton(
-// //           onPressed: _pickVideo,
-// //           child: Text('Seleccionar video'),
-// //         ),
-// //         if (_videoFile != null) ...[
-// //           SizedBox(height: 16),
-// //           Text('Video seleccionado:'),
-// //           SizedBox(height: 8),
-// //           AspectRatio(
-// //             aspectRatio: 16 / 9,
-// //             child: VideoPlayer(_videoFile!),
-// //           ),
-// //         ],
-// //       ],
-// //     );
-// //   }
-// // }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         ElevatedButton(
+//           onPressed: _pickVideo,
+//           child: Text('Seleccionar video'),
+//         ),
+//         if (_videoFile != null) ...[
+//           SizedBox(height: 16),
+//           Text('Video seleccionado:'),
+//           SizedBox(height: 8),
+//           AspectRatio(
+//             aspectRatio: 16 / 9,
+//             child: VideoPlayer(_videoFile!),
+//           ),
+//         ],
+//       ],
+//     );
+//   }
+// }

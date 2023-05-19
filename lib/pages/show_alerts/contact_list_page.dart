@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_alerta_temprana/models/Alert.dart';
-import 'package:mobile_alerta_temprana/pages/sendNotification/form_page.dart';
+import 'package:mobile_alerta_temprana/helpers/progress_indicator_fachero.dart';
+import 'package:mobile_alerta_temprana/models/AlertaEnvio.dart';
+import 'package:mobile_alerta_temprana/models/Alerts.dart';
+import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/pages/show_alerts/alert.dart';
+import 'package:mobile_alerta_temprana/services/alertaenvio_service.dart';
+import 'package:mobile_alerta_temprana/services/alertas_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/cards.dart';
 import 'package:mobile_alerta_temprana/widgets/perspective_list_view.dart';
 
 class MicrosListPage extends StatefulWidget {
-  const MicrosListPage({required this.nombreEvento, super.key});
-  final String nombreEvento;
+  const MicrosListPage({required this.evento, super.key});
+
+  final EventoResponse evento;
   @override
-  MicrosListPageState createState() => MicrosListPageState();
+  State<MicrosListPage> createState() => MicrosListPageState();
 }
 
 class MicrosListPageState extends State<MicrosListPage> {
+  List<AlertResponse> alerts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    AlertasServices().getAlerts(widget.evento.id).then((listAlerts) => {
+          setState(() {
+            alerts = listAlerts;
+          }),
+        });
+    print('a qui estoy imprimiendo las lsita ' + '$alerts');
+  }
+
   final _searchController = TextEditingController();
   _opciones(context) {
     showDialog(
@@ -26,13 +44,13 @@ class MicrosListPageState extends State<MicrosListPage> {
                 onTap: () {},
                 child: Container(
                   padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
                     width: 1,
                     color: Colors.blueGrey,
                   ))),
-                  child: Row(children: [
+                  child: Row(children: const <Widget>[
                     Expanded(
                         child: Text(
                       'Municipios',
@@ -47,16 +65,16 @@ class MicrosListPageState extends State<MicrosListPage> {
   }
 
   @override
-  void initState() {
-    // _loadData();
-    print(alertas);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.evento.tipoEvento,
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -69,37 +87,34 @@ class MicrosListPageState extends State<MicrosListPage> {
             ),
           ),
           child: Stack(children: [
-            PerspectiveListView(
-              visualizedItems: alertas.length,
-              itemExtent: responsive.hp(50),
-              initialIndex: alertas.length - 1,
-              enableBackItemsShadow: true,
-              backItemsShadowColor: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.all(13),
-              onTapFrontItem: (index) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Alertas(
-                              alert: alertas[index!],
-                            )));
-                // final color = Colors.accents[index! % Colors.accents.length];
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute<dynamic>(
-                //     builder: (_) => ContactDetailScreen(
-                //       color: color,
-                //       distance: 4,
-                //     ),
-                //   ),
-                // );
-              },
-              children: List.generate(alertas.length, (index) {
-                return MicrosCard(
-                  alert: alertas[index],
-                );
-              }),
-            ),
+            alerts.isNotEmpty
+                ? PerspectiveListView(
+                    visualizedItems: alerts.length,
+                    itemExtent: responsive.hp(47),
+                    initialIndex: alerts.length - 1,
+                    enableBackItemsShadow: true,
+                    backItemsShadowColor:
+                        Theme.of(context).scaffoldBackgroundColor,
+                    padding: const EdgeInsets.all(13),
+                    onTapFrontItem: (index) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Alertas(
+                                    alert: alerts[index!],
+                                  )));
+                    },
+                    children: List.generate(alerts.length, (index) {
+                      return MicroCard(
+                        alert: alerts[index],
+                        colorestado: Color.fromARGB(255, 227, 186, 235),
+                      );
+                      // return Text('number' +
+                      //     '$index' +
+                      //     alerts[index].description.toString());
+                    }),
+                  )
+                : CargandoSquare(),
             Container(
               //padding: EdgeInsets.only(top: 20),
               height: responsive.hp(10),
@@ -108,6 +123,7 @@ class MicrosListPageState extends State<MicrosListPage> {
               child: Row(
                 children: [
                   Container(
+                    height: responsive.hp(7),
                     width: responsive.wp(70),
                     child: Expanded(
                       child: TextField(
@@ -119,8 +135,8 @@ class MicrosListPageState extends State<MicrosListPage> {
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                             //suffixIcon: Icon(Icons.clear),
-                            hintText: "Buscar",
-                            prefixIcon: Icon(Icons.search),
+                            hintText: alerts.length.toString(),
+                            prefixIcon: const Icon(Icons.search),
                           )),
                     ),
                   ),

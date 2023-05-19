@@ -12,38 +12,38 @@ String alertResponseToJson(List<AlertResponse> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AlertResponse {
-  AlertResponse({
-    required this.id,
-    required this.nombre,
-    required this.fecha,
-    required this.hora,
-    required this.description,
-    required this.geoX,
-    required this.geoY,
-    required this.urlMapa,
-    required this.eventoId,
-    required this.unidadId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
   int id;
   String nombre;
-  DateTime fecha;
-  String hora;
+  dynamic fecha;
+  dynamic hora;
   String description;
   int geoX;
   int geoY;
   String urlMapa;
   int eventoId;
   int unidadId;
-  dynamic createdAt;
-  dynamic updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  AlertResponse({
+    required this.id,
+    required this.nombre,
+    this.fecha,
+    this.hora,
+    required this.description,
+    required this.geoX,
+    required this.geoY,
+    required this.urlMapa,
+    required this.eventoId,
+    required this.unidadId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory AlertResponse.fromJson(Map<String, dynamic> json) => AlertResponse(
         id: json["id"],
         nombre: json["nombre"],
-        fecha: DateTime.parse(json["fecha"]),
+        fecha: json["fecha"],
         hora: json["hora"],
         description: json["description"],
         geoX: json["geoX"],
@@ -51,15 +51,14 @@ class AlertResponse {
         urlMapa: json["url_mapa"],
         eventoId: json["evento_id"],
         unidadId: json["unidad_id"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,
-        "fecha":
-            "${fecha.year.toString().padLeft(4, '0')}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')}",
+        "fecha": fecha,
         "hora": hora,
         "description": description,
         "geoX": geoX,
@@ -67,7 +66,7 @@ class AlertResponse {
         "url_mapa": urlMapa,
         "evento_id": eventoId,
         "unidad_id": unidadId,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
       };
 }
