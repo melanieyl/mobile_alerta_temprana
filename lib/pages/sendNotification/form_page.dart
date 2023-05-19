@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_alerta_temprana/models/Eventos.dart';
+import 'package:mobile_alerta_temprana/pages/sendNotification/map_view.dart';
 import 'package:mobile_alerta_temprana/services/eventos_service.dart';
 import 'package:mobile_alerta_temprana/services/notificacion_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
@@ -56,7 +59,6 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
     );
     _miubicacion = true;
     setState(() {});
-
     latitud = position.latitude;
     longitud = position.longitude;
   }
@@ -409,9 +411,9 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                               ? const Icon(Icons.check, color: Colors.green)
                               : const Icon(Icons.add, color: Colors.red),
                           SizedBox(
-                            width: responsive.wp(2),
+                            width: responsive.wp(5),
                           ),
-                          const Text('Guardar mi actual Ubicacion',
+                          const Text('Seleccionar ubicacion',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ],
@@ -421,6 +423,10 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                           "haga click en el boton guardar ubicacion",
                           style: TextStyle(color: Colors.red, fontSize: 15),
                         )
+                      : SizedBox.shrink(),
+
+                  (_miubicacion)
+                      ? Map_View(latitud: latitud, longitud: longitud)
                       : SizedBox.shrink(),
 
                   SizedBox(
@@ -451,20 +457,21 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                               isVerifying = false; // <-- Code run after delay
                             });
                           });
+                          setState(() {});
 
                           return;
                         }
-                        if (_imageList.isNotEmpty) {
-                          for (var i = 0; i < _imageList.length; i++) {
-                            NotificationService()
-                                .uploadImage(
-                                    _imageList[i]!) //le estoy añadiendo un !
-                                .then((value) => null);
-                          }
-                        }
-                        NotificationService()
-                            .uploadImage(video2)
-                            .then((value) => null);
+                        // if (_imageList.isNotEmpty) {
+                        //   for (var i = 0; i < _imageList.length; i++) {
+                        //     NotificationService()
+                        //         .uploadImage(
+                        //             _imageList[i]!) //le estoy añadiendo un !
+                        //         .then((value) => null);
+                        //   }
+                        // }
+                        // NotificationService()
+                        //     .uploadImage(video2)
+                        //     .then((value) => null);
 
                         // AlertDialog(
                         //   content: Text('imagenes subidas exitosamente' +

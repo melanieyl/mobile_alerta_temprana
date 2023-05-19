@@ -51,6 +51,7 @@ dependencies:
   whatsapp_unilink: ^2.1.0
   video_player: ^2.6.1
   video_trimmer: ^2.0.0  
+  google_maps_flutter: ^2.2.6
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - imgs/
+     - imgs/amarillo/
+     - imgs/naranaja/
+     - imgs/rojo/
+     - imgs/verde/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
