@@ -69,7 +69,7 @@ class _AlertasState extends State<Alertas> {
     return Scaffold(
       drawer: alertEnvio.isNotEmpty
           ? Drawer(
-              width: responsive.wp(40),
+              width: responsive.wp(70),
               child: ListView(
                 children: [
                   DrawerHeader(
@@ -81,6 +81,7 @@ class _AlertasState extends State<Alertas> {
                             setState(() {
                               _isContentVisible = true;
                             });
+                            Navigator.pop(context);
                           },
                           icon: Icon(
                             CupertinoIcons.info_circle_fill,
@@ -93,6 +94,7 @@ class _AlertasState extends State<Alertas> {
                             setState(() {
                               _isContentVisible = false;
                             });
+                            Navigator.pop(context);
                           },
                           icon: Icon(
                             Icons.graphic_eq_outlined,
@@ -113,29 +115,35 @@ class _AlertasState extends State<Alertas> {
                         AlertaEnvioResponse alertaenvio = alertEnvio[index];
                         Color myColor = hexToColor(alertaenvio.color);
                         return Card(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (!_isContentVisible) {
-                                    controller.animateToPage(index,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.easeInOut);
-                                    setState(() {
-                                      _isContentVisible = false;
-                                      currentPage = index;
-                                      print('$index');
-                                    });
-                                  }
-                                },
-                                icon: Icon(
+                          child: MaterialButton(
+                            onPressed: () {
+                              if (!_isContentVisible) {
+                                controller.animateToPage(index,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut);
+                                setState(() {
+                                  _isContentVisible = false;
+                                  currentPage = index;
+                                  print('$index');
+                                });
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
                                   CupertinoIcons.exclamationmark_shield_fill,
                                   size: responsive.wp(10),
                                   color: myColor,
                                 ),
-                              ),
-                              Text(alertaenvio.nombreEstado),
-                            ],
+                                Text('(' +
+                                    alertaenvio.nombreEstado +
+                                    ') ' +
+                                    alertaenvio.fecha
+                                        .toString()
+                                        .substring(0, 10)),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -376,7 +384,7 @@ class _AlertasState extends State<Alertas> {
                               (alertaenvio.nombreEstado == 'Moderado')
                                   ? imagenes(imagenesamarillas)
                                   : SizedBox.shrink(),
-                              (alertaenvio.nombreEstado == 'Bajo')
+                              (alertaenvio.nombreEstado == 'Normal')
                                   ? imagenes(imagenesverdes)
                                   : SizedBox.shrink(),
                             ],

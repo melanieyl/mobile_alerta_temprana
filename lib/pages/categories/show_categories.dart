@@ -11,16 +11,24 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   List<EventoResponse> eventos = [];
+  late Future<List<EventoResponse>> _eventosFuture;
 
-  // List<Event> eventosCategories = [];
   @override
   void initState() {
-    EventosServices.getEventos().then((listEventos) => {
-          setState(() {
-            eventos = listEventos;
-          }),
-        });
+    _eventosFuture = EventosServices.getEventos();
+    _eventosFuture.then((listEventos) {
+      if (!mounted) return; // Verificar si el widget todavía está montado
+      setState(() {
+        eventos = listEventos;
+      });
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _eventosFuture?.then((_) {}); // Esperar a que el futuro se complete
+    super.dispose();
   }
 
   @override
@@ -72,13 +80,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                         builder: (context) => MicrosListPage(
                                               evento: eventos[index2],
                                             )));
-
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => MicrosListPage(
-                                //             nombreEvento:
-                                //                 eventos[index2].tipoEvento)));
                               },
                               child: Container(
                                   height: responsive.hp(15),
@@ -90,6 +91,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                     image: NetworkImage(eventos[index2].foto),
                                     placeholder:
                                         const AssetImage('imgs/loading.gif'),
+                                    fit: BoxFit.cover,
                                   )),
                             ),
                             SizedBox(
@@ -125,12 +127,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
             // ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "MainButton",
-        backgroundColor: Colors.green.shade900,
-        child: Icon(Icons.call),
-        onPressed: () {},
       ),
     );
   }

@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/pages/sendNotification/map_view.dart';
 import 'package:mobile_alerta_temprana/services/eventos_service.dart';
-import 'package:mobile_alerta_temprana/services/notificacion_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:video_player/video_player.dart';
 
@@ -141,13 +138,13 @@ class _FormularioEmergenciaState extends State<FormularioEmergencia> {
                       ),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: responsive.hp(3), left: responsive.wp(2)),
+                    child: Center(
                       child: Text(
                         _creationDateTime.toString().substring(0, 19),
                         style: const TextStyle(
-                            color: Colors.black54, fontSize: 20),
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),

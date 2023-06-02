@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_alerta_temprana/helpers/progress_indicator_fachero.dart';
-import 'package:mobile_alerta_temprana/models/AlertaEnvio.dart';
 import 'package:mobile_alerta_temprana/models/Alerts.dart';
 import 'package:mobile_alerta_temprana/models/Eventos.dart';
 import 'package:mobile_alerta_temprana/pages/show_alerts/alert.dart';
-import 'package:mobile_alerta_temprana/services/alertaenvio_service.dart';
 import 'package:mobile_alerta_temprana/services/alertas_service.dart';
 import 'package:mobile_alerta_temprana/utils/responsive.dart';
 import 'package:mobile_alerta_temprana/widgets/cards.dart';
@@ -68,6 +66,7 @@ class MicrosListPageState extends State<MicrosListPage> {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           widget.evento.tipoEvento,
@@ -107,7 +106,7 @@ class MicrosListPageState extends State<MicrosListPage> {
                     children: List.generate(alerts.length, (index) {
                       return MicroCard(
                         alert: alerts[index],
-                        colorestado: Color.fromARGB(255, 227, 186, 235),
+                        colorestado: Colors.green.shade800,
                       );
                       // return Text('number' +
                       //     '$index' +
@@ -122,10 +121,9 @@ class MicrosListPageState extends State<MicrosListPage> {
               color: Colors.transparent,
               child: Row(
                 children: [
-                  Container(
-                    height: responsive.hp(7),
-                    width: responsive.wp(70),
-                    child: Expanded(
+                  Expanded(
+                    child: Container(
+                      height: responsive.hp(6),
                       child: TextField(
                           controller: _searchController,
                           decoration: InputDecoration(
@@ -149,6 +147,18 @@ class MicrosListPageState extends State<MicrosListPage> {
                         size: 33,
                         color: Colors.black54,
                       )),
+                  IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2025),
+                      );
+                      // Hacer algo con la fecha seleccionada
+                    },
+                  ),
                   IconButton(
                     icon: Icon(Icons.calendar_today),
                     onPressed: () async {

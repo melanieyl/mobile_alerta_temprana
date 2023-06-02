@@ -14,7 +14,7 @@ class MicroCard extends StatefulWidget {
 }
 
 class _MicroCardState extends State<MicroCard> {
-  Color mycolor = Color.fromARGB(255, 228, 160, 240);
+  Color mycolor = Colors.green.shade900;
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -95,12 +95,13 @@ class _MicroCardState extends State<MicroCard> {
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.normal,
+                                          color: Color.fromARGB(255, 3, 32, 4),
                                           height: 1.5,
                                         ),
                                       )
-                                    : TextSpan(
+                                    : const TextSpan(
                                         text: '\n' + ' 0:0',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.normal,
                                           height: 1.5,
@@ -119,7 +120,6 @@ class _MicroCardState extends State<MicroCard> {
                     ),
 
                     SizedBox(height: responsive.hp(3)),
-
                     Row(
                       children: [
                         const Icon(
@@ -131,7 +131,7 @@ class _MicroCardState extends State<MicroCard> {
                         Flexible(
                           child: Text.rich(
                             TextSpan(
-                              text: widget.alert.description.substring(0, 70) +
+                              text: widget.alert.description.substring(0, 80) +
                                   ' ...',
                             ),
                             style: const TextStyle(
